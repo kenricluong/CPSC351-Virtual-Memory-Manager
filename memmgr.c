@@ -137,8 +137,6 @@ void getframe(int logic_add, FILE** fadd, FILE** fstore){
     }
   }
     
-    
-    
   if(frame == -1){
     for(int i = 0; i < available_page; i++){
       if(page_table_frames[i] == page){         
@@ -153,9 +151,7 @@ void getframe(int logic_add, FILE** fadd, FILE** fstore){
   }
     
   update_tlb(page, frame);
-
-  value = main_mem[frame][offset];
-    
+  value = main_mem[frame][offset];    
 }
 
 
