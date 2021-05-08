@@ -80,7 +80,7 @@ int tlb_contains(unsigned x) {  // TODO:
   int i;
   for(i = 0; i < current_tlb_entry; i++){
         if(tlb[i][0] == x){
-           return i;//hit
+           return i;
         }
     }
   return i;
@@ -88,13 +88,13 @@ int tlb_contains(unsigned x) {  // TODO:
 
 void update_tlb(unsigned page, unsigned frame) {  // TODO:
      int i = tlb_contains(page); 
-  if(i == current_tlb_entry){//if miss
-    if(current_tlb_entry < 16){//not full
+  if(i == current_tlb_entry){
+    if(current_tlb_entry < 16){
       tlb[current_tlb_entry][0] = page;
       tlb[current_tlb_entry][1] = frame;
     }
     else{
-      for(i = 0; i < 16 - 1; i++){//if full
+      for(i = 0; i < 16 - 1; i++){
         tlb[i][0] = tlb[i + 1][0];
         tlb[i][1] = tlb[i + 1][1];
       }
@@ -102,16 +102,16 @@ void update_tlb(unsigned page, unsigned frame) {  // TODO:
       tlb[current_tlb_entry-1][1] = frame;
     }        
   }
-  else{//if hit
+  else{
     for(i = i; i < current_tlb_entry - 1; i++){      
-      tlb[i][0] = tlb[i + 1][0]; //push everything forward once
+      tlb[i][0] = tlb[i + 1][0]; 
       tlb[i][1] = tlb[i + 1][1];
     }
-    if(current_tlb_entry < 16){//not full
+    if(current_tlb_entry < 16){
       tlb[current_tlb_entry][0] = page;
       tlb[current_tlb_entry][1] = frame;
     }
-    else{//if full put at the end
+    else{
       tlb[current_tlb_entry-1][0] = page;
       tlb[current_tlb_entry-1][1] = frame;
     }
@@ -133,20 +133,20 @@ void getframe(int logic_add, FILE** fadd, FILE** fstore){
   for(int i = 0; i < 16; i++){
     if(tlb[i][0] == page){   
       frame = tlb[i][1];  
-      tlbh++;           //tlb hit
+      tlbh++;           
     }
   }
     
-    //tlb miss
+    
     
   if(frame == -1){
     for(int i = 0; i < available_page; i++){
-      if(page_table_frames[i] == page){         //Check page table
-        frame = page_table_frames[i];        //update frame if found
+      if(page_table_frames[i] == page){         
+        frame = page_table_frames[i];       
       }
     }
-    if(frame == -1){                         //page table miss
-      read_store(page, fadd, fstore);        //page fault
+    if(frame == -1){                        
+      read_store(page, fadd, fstore);       
       page_fault_count++;                    
       frame = available_frame - 1;
     }
